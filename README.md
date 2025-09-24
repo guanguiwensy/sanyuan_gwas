@@ -70,11 +70,8 @@ java -Xmx16g -Djava.io.tmpdir=/idc_obu/pipeline/WGS/normal_only/tmp -jar /usr/Ge
           >>/idc_obu/project/CHB/03.analysis/batch4/20250510/obu/K155378N/shell/G5_bam_interval/G5_bam_interval-k155378n-node5.sh.log 2>&1
 
 第五步 markdup
-java -Xmx16g -Djava.io.tmpdir=/idc_obu/pipeline/WGS/normal_only/tmp -jar /picard_tools/MarkDuplicates.jar \
-          INPUT=/idc_obu/project/CHB/03.analysis/batch4/20250510/obu/K155378N/01_aln/K155378N_E250066377-L01.sort.bam \
-          OUTPUT=/idc_obu/project/CHB/03.analysis/batch4/20250510/obu/K155378N/01_aln/K155378N_rmdup.bam \
-          METRICS_FILE=metrics CREATE_INDEX=true VALIDATION_STRINGENCY=LENIENT REMOVE_DUPLICATES=true \
-          >>/idc_obu/project/CHB/03.analysis/batch4/20250510/obu/K155378N/shell/G6_bam_markdup/G6_bam_markdup-k155378n-node6.sh.log 2>&1
+cat sample |while read id; do java -Xmx100g -Djava.io.tmpdir=./ -jar picard.jar MarkDuplicates INPUT=$id.sort.bam OUTPUT=$id.sort.rmdup.bam METRICS_FILE=$id.metrics   CREATE_INDEX=true   VALIDATION_STRINGENCY=LENIENT   REMOVE_DUPLICATES=true; done
+
 
 第六步 indelrealign
 java -Xmx16g -Djava.io.tmpdir=/idc_obu/pipeline/WGS/normal_only/tmp -jar /usr/GenomeAnalysisTK.jar \
